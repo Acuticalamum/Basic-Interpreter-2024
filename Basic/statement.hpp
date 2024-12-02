@@ -73,7 +73,6 @@ public:
 
 };
 
-
 /*
  * The remainder of this file must consists of subclass
  * definitions for the individual statement forms.  Each of
@@ -84,5 +83,107 @@ public:
  * an Expression object), the class implementation must also
  * specify its own destructor method to free that memory.
  */
+
+ class RemStatement : public Statement {
+   public :
+     RemStatement() {}
+     ~RemStatement() {}
+     virtual void execute(EvalState &state, Program &program) override {
+       program.nextCurrentLine();
+     }
+ };
+
+ class LetStatement : public Statement {
+   public :
+     LetStatement::LetStatement(TokenScanner &scanner) {
+       expr = parseExp(scanner);
+     }
+     ~LetStatement() {
+        delete expr;
+     }
+     virtual void execute(EvalState &state, Program &program) override {
+        expr -> eval(state);
+        program.nextCurrentLine();
+     }
+   private :
+     Expression* expr;
+ };
+
+ class PrintStatement : public Statement {
+   public :
+     PrintStatement(Expression* _expr) {
+       expr = _expr;
+     }
+     ~PrintStatement() {
+        delete expr;
+     }
+     virtual void execute(EvalState &state, Program &program) override {
+       std::cout << expr -> eval(state) << std::endl;
+       program.nextCurrentLine();
+     }
+   private :
+     Expression* expr;
+ };
+
+ class InputStatement : public Statement {
+   public :
+     InputStatement(std::string _name) {
+       name = _name;
+     }
+     virtual void execute(EvalState &state, Program &program) override {
+       int Input;
+       std::cin >> Input;
+       std::cout << "  ?  " << std::endl;
+       state.setValue(name, Input);
+       program.nextCurrentLine();
+     }
+   private :
+     std::string name;
+ };
+
+ class IfStatement : public Statement {
+   public :
+     IfStatement(Expression* _expr1, std::string _cmp, Expression* _expr2, int _gotoNumber) {
+       expr1 = _expr1;
+       expr2 = _expr2;
+       cmp = _cmp;
+       gotoNumber = _gotoNumber;
+     }
+     ~IfStatement() {
+        delete expr1;
+        delete expr2;
+     }
+     virtual void execute(EvalState &state, Program &program) override {
+       //to do
+     }
+   private : 
+     Expression *expr1, *expr2;
+     int gotoNumber;
+     std::string cmp;
+ };
+
+ class EndStatement : public Statement {
+   public :
+     EndStatement() {}
+     virtual void execute(EvalState &state, Program &program) override {
+       program.endProgram();
+       program.nextCurrentLine();
+     }
+ };
+
+ class GotoStatement : public Statement {
+   public :
+     GotoStatement(int _lineNumber) {
+       lineNumber = _lineNumber;
+     }
+     ~GotoStatement() {}
+     virtual void execute(EvalState &state, Program &program) override {
+       program.switchCurrentLine(lineNumber);
+     }
+   private : 
+     int lineNumber;
+ };
+
+Statement* transfer(const std::string &x); 
 
 #endif
