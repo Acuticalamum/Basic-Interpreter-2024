@@ -110,7 +110,11 @@ void processLine(std::string line, Program &program, EvalState &state) {
     else if(tokentype == WORD) {
       if(token == "LET" || token == "PRINT" || token == "INPUT") {
         Statement* statement = transfer(line);
-        statement -> execute(state, program);
+        try {
+          statement -> execute(state, program);
+        } catch (ErrorException &ex) {
+          std::cout << ex.getMessage() << std::endl;
+        }
         delete statement;
       }
       else {
