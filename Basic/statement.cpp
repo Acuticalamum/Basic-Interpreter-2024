@@ -81,7 +81,18 @@ Statement* transfer(const std::string &str) {
     
   }
   else if(indicator == "GOTO") {
-    
+    token = scanner.nextToken();
+    if(scanner.hasMoreTokens()) {
+      error("SYNTAX ERROR");
+    }
+    try {
+      int lineNumber = stringToInteger(token);
+      statement = new GotoStatement(lineNumber);
+      return statement;
+    } catch (ErrorException &ex) {
+      delete statement;
+      throw ex;
+    }
   }
   else error("SYNTAX ERROR");
 }
