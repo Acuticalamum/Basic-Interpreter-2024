@@ -131,6 +131,7 @@ void InputStatement::execute(EvalState &state, Program &program) {
   std::cout << " ? ";
   getline(std::cin, Input);
   for(int i = 0; i < Input.size(); i++) {
+    if(i == 0 && Input[0] == '-' && Input.size() > 1) continue;
     if(Input[i] < '0' || Input[i] > '9') {
       std::cout << "INVALID NUMBER" << std::endl;
       execute(state, program);
