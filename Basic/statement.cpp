@@ -20,69 +20,6 @@ Statement::~Statement() = default;
 
 //todo
 
-
-/*trasfer is the function to change str into Statement* */
-Statement* transfer(const std::string &str) {
-  TokenScanner scanner;
-  scanner.ignoreWhitespace();
-  scanner.scanNumbers();
-  scanner.setInput(str);
-  std::string indicator, token;
-  Statement *statement = nullptr;
-  Expression *expr1 = nullptr, *expr2 = nullptr;
-  indicator = scanner.nextToken();
-  TokenType tokentype = scanner.getTokenType(indicator);
-  if(tokentype == NUMBER) {
-    indicator = scanner.nextToken();
-  }
-  if(indicator == "REM") {
-    return new RemStatement;
-  }
-  else if(indicator == "LET") {
-    try {
-      statement = new LetStatement(scanner);
-      return statement;
-    } catch (ErrorException &ex) {
-      delete statement;
-      throw ex;
-    }
-  }
-  else if(indicator == "PRINT") {
-    try {
-      expr1 = parseExp(scanner);
-      statement = new PrintStatement(expr1);
-      return statement;
-    } catch (ErrorException &ex) {
-      delete statement;
-      throw ex;
-    }
-  }
-  else if(indicator == "INPUT") {
-    try {
-      expr1 = parseExp(scanner);
-      if(expr1 -> getType() == IDENTIFIER) {
-        token = scanner.nextToken();
-        statement = new InputStatement(token);
-      } else {
-        error("SYNTAX ERROR");
-      }
-    } catch(ErrorException &ex) {
-      delete statement;
-      throw ex;
-    }
-  }
-  else if(indicator == "END") {
-    return new EndStatement;
-  }
-  else if(indicator == "IF") {
-    
-  }
-  else if(indicator == "GOTO") {
-    
-  }
-  else error("SYNTAX ERROR");
-}
-
 /**/
 
 RemStatement::RemStatement() {}
@@ -94,7 +31,6 @@ void RemStatement::execute(EvalState &state, Program &program) {
 /**/
 
 LetStatement::LetStatement(TokenScanner &scanner) {
-  //modify key words
   expr = parseExp(scanner);
 }
 LetStatement::~LetStatement() {
@@ -124,10 +60,19 @@ InputStatement::InputStatement(std::string _name) {
   name = _name;
 }
 void InputStatement::execute(EvalState &state, Program &program) {
-  int Input;
-  std::cin >> Input;
-  std::cout << "  ?  " << std::endl;
-  state.setValue(name, Input);
+  std::string Input;
+  std::cout << " ? ";
+  getline(std::cin, Input);
+  for(int i = 0; i < Input.size(); i++) {
+    if(i == 0 && Input[0] == '-' && Input.size() > 1) continue;
+    if(Input[i] < '0' || Input[i] > '9') {
+      std::cout << "INVALID NUMBER" << std::endl;
+      execute(state, program);
+      return;
+    }
+  }
+  int val = stringToInteger(Input);
+  state.setValue(name, val);
   program.nextCurrentLine();
 }
 
@@ -145,7 +90,49 @@ IfStatement::~IfStatement() {
 }
 void IfStatement::execute(EvalState &state, Program &program) {
   //to do
-}
+  try {
+    int lval = expr1 -> eval(state);
+    int rval = expr2 -> eval(state);
+    if(cmp == "<") {
+      if(lval < rval) {
+        try {
+          program.switchCurrentLine(gotoNumber);
+        } catch (ErrorException &ex) {
+          throw ex;
+        }
+      }
+      else {
+        program.nextCurrentLine();
+      }
+    }
+    if(cmp == ">") {
+      if(lval > rval) {
+        try {
+          program.switchCurrentLine(gotoNumber);
+        } catch (ErrorException &ex) {
+          throw ex;
+        }
+      }
+      else {
+        program.nextCurrentLine();
+      }
+    }
+    if(cmp == "=") {
+      if(lval == rval) {
+        try {
+          program.switchCurrentLine(gotoNumber);
+        } catch (ErrorException &ex) {
+          throw ex;
+        }
+      }
+      else {
+        program.nextCurrentLine();
+      }
+    }
+  } catch (ErrorException &ex) {
+    throw ex;
+  }
+ }
 
 /**/
 
@@ -161,5 +148,9 @@ GotoStatement::GotoStatement(int _lineNumber) {
   lineNumber = _lineNumber;
 }
 void GotoStatement::execute(EvalState &state, Program &program) {
-  program.switchCurrentLine(lineNumber);
+  try {
+    program.switchCurrentLine(lineNumber);
+  } catch (ErrorException &ex) {
+    throw ex;
+  }
 }
