@@ -20,83 +20,6 @@ Statement::~Statement() = default;
 
 //todo
 
-
-/*trasfer is the function to change str into Statement* */
-Statement* transfer(const std::string &str) {
-  TokenScanner scanner;
-  scanner.ignoreWhitespace();
-  scanner.scanNumbers();
-  scanner.setInput(str);
-  std::string indicator, token;
-  Statement *statement = nullptr;
-  Expression *expr1 = nullptr, *expr2 = nullptr;
-  indicator = scanner.nextToken();
-  TokenType tokentype = scanner.getTokenType(indicator);
-  if(tokentype == NUMBER) {
-    indicator = scanner.nextToken();
-  }
-  if(indicator == "REM") {
-    return new RemStatement;
-  }
-  else if(indicator == "LET") {
-    try {
-      statement = new LetStatement(scanner);
-      return statement;
-    } catch (ErrorException &ex) {
-      delete statement;
-      throw ex;
-    }
-  }
-  else if(indicator == "PRINT") {
-    try {
-      expr1 = parseExp(scanner);
-      statement = new PrintStatement(expr1);
-      return statement;
-    } catch (ErrorException &ex) {
-      delete statement;
-      throw ex;
-    }
-  }
-  else if(indicator == "INPUT") {
-    try {
-      expr1 = parseExp(scanner);
-      if(expr1 -> getType() == IDENTIFIER) {
-        token = expr1 -> toString();
-        statement = new InputStatement(token);
-        delete expr1;
-        return statement;
-      } else {
-        error("SYNTAX ERROR");
-      }
-    } catch(ErrorException &ex) {
-      delete statement;
-      delete expr1;
-      throw ex;
-    }
-  }
-  else if(indicator == "END") {
-    return new EndStatement;
-  }
-  else if(indicator == "IF") {
-    
-  }
-  else if(indicator == "GOTO") {
-    token = scanner.nextToken();
-    if(scanner.hasMoreTokens()) {
-      error("SYNTAX ERROR");
-    }
-    try {
-      int lineNumber = stringToInteger(token);
-      statement = new GotoStatement(lineNumber);
-      return statement;
-    } catch (ErrorException &ex) {
-      delete statement;
-      throw ex;
-    }
-  }
-  else error("SYNTAX ERROR");
-}
-
 /**/
 
 RemStatement::RemStatement() {}
@@ -108,7 +31,6 @@ void RemStatement::execute(EvalState &state, Program &program) {
 /**/
 
 LetStatement::LetStatement(TokenScanner &scanner) {
-  //modify key words
   expr = parseExp(scanner);
 }
 LetStatement::~LetStatement() {
