@@ -127,10 +127,18 @@ InputStatement::InputStatement(std::string _name) {
   name = _name;
 }
 void InputStatement::execute(EvalState &state, Program &program) {
-  int Input;
+  std::string Input;
   std::cout << " ? ";
-  std::cin >> Input;
-  state.setValue(name, Input);
+  getline(std::cin, Input);
+  for(int i = 0; i < Input.size(); i++) {
+    if(Input[i] < '0' || Input[i] > '9') {
+      std::cout << "INVALID NUMBER" << std::endl;
+      execute(state, program);
+      return;
+    }
+  }
+  int val = stringToInteger(Input);
+  state.setValue(name, val);
   program.nextCurrentLine();
 }
 
