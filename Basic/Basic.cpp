@@ -108,7 +108,63 @@ Statement* transfer(const std::string &str) {
     return new EndStatement;
   }
   else if(indicator == "IF") {
-    
+    try {
+      int gotoNumber = -1;
+      std::string cmp = "";
+      std::string lstr = "", rstr = "";
+      bool flagThen = false;
+      bool flagCmp = false;
+      while(scanner.hasMoreTokens()) {
+        token = scanner.nextToken();
+        if(token == "THEN") {
+          flagThen = true;
+          token = scanner.nextToken();
+          if(scanner.hasMoreTokens()) {
+            error("SYNTAX ERROR");
+          }
+          gotoNumber = stringToInteger(token);
+        }
+        else if(token == "=" || token == ">" || token == "<") {
+          if(flagCmp) {
+            error("SYNTAX ERROR");
+          } else {
+            flagCmp = true;
+            cmp = token;
+          }
+        }
+        else if(!flagThen && !flagCmp) {
+          if(lstr == "") lstr = token;
+          else lstr = lstr + " " + token;
+        }
+        else if(!flagThen && flagCmp) {
+          if(rstr == "") rstr = token + " ";
+          else rstr = rstr + " " + token + " ";
+        }
+      }
+      if(!flagThen) {
+        error("SYNTAX ERROR");
+      }
+      /*std::cout << lstr << std::endl;
+      std::cout << rstr << std::endl;
+      std::cout << cmp << std::endl;
+      std::cout << gotoNumber << std::endl;*/
+      TokenScanner lscanner, rscanner;
+      lscanner.ignoreWhitespace();
+      lscanner.scanNumbers();
+      lscanner.setInput(lstr);
+      expr1 = parseExp(lscanner);
+      rscanner.ignoreWhitespace();
+      rscanner.scanNumbers();
+      rscanner.setInput(rstr);
+      expr2 = parseExp(rscanner);
+      statement = new IfStatement(expr1, cmp, expr2, gotoNumber);
+      return statement;
+    } catch(ErrorException &ex) {
+      delete statement;
+      delete expr1;
+      delete expr2;
+      throw ex;
+    }
   }
   else if(indicator == "GOTO") {
     token = scanner.nextToken();
