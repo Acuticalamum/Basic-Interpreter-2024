@@ -133,6 +133,7 @@ void Program::nextCurrentLine() {
 }
 
 void Program::run_the_program(EvalState &state) {
+    Ended = false;
     CurrentLine = getFirstLineNumber();
     while(CurrentLine != -1) {
         try {
