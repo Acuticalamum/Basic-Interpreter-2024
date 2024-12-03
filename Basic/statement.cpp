@@ -128,7 +128,7 @@ InputStatement::InputStatement(std::string _name) {
 }
 void InputStatement::execute(EvalState &state, Program &program) {
   int Input;
-  std::cout << "  ?  ";
+  std::cout << " ? ";
   std::cin >> Input;
   state.setValue(name, Input);
   program.nextCurrentLine();
