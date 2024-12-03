@@ -63,12 +63,14 @@ Statement* transfer(const std::string &str) {
       if(expr1 -> getType() == IDENTIFIER) {
         token = expr1 -> toString();
         statement = new InputStatement(token);
+        delete expr1;
         return statement;
       } else {
         error("SYNTAX ERROR");
       }
     } catch(ErrorException &ex) {
       delete statement;
+      delete expr1;
       throw ex;
     }
   }
