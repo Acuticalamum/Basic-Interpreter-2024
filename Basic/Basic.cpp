@@ -111,6 +111,7 @@ void processLine(std::string line, Program &program, EvalState &state) {
       if(token == "LET" || token == "PRINT" || token == "INPUT") {
         Statement* statement = transfer(line);
         statement -> execute(state, program);
+        delete statement;
       }
       else {
         std::cout << "SYNTAX ERROR" << std::endl;
