@@ -106,5 +106,9 @@ GotoStatement::GotoStatement(int _lineNumber) {
   lineNumber = _lineNumber;
 }
 void GotoStatement::execute(EvalState &state, Program &program) {
-  program.switchCurrentLine(lineNumber);
+  try {
+    program.switchCurrentLine(lineNumber);
+  } catch (ErrorException &ex) {
+    throw ex;
+  }
 }
