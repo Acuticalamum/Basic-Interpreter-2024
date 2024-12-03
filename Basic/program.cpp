@@ -12,14 +12,35 @@
 
 
 
-Program::Program() = default;
+Program::Program() {
+  CurrentLine = -1;
+  Ended = false;
+  lines.clear();
+  for(auto it = map_statement.begin(); it != map_statement.end(); it++) {
+    delete it -> second;
+  }
+  map_statement.clear();
+  map_string.clear();
+}
 
-Program::~Program() = default;
+Program::~Program() {
+  CurrentLine = -1;
+  Ended = false;
+  lines.clear();
+  for(auto it = map_statement.begin(); it != map_statement.end(); it++) {
+    delete it -> second;
+  }
+  map_statement.clear();
+  map_string.clear();
+}
 
 void Program::clear() {
     // Replace this stub with your own code
     //todo
     map_string.clear();
+    for(auto it = map_statement.begin(); it != map_statement.end(); it++) {
+      delete it -> second;
+    }
     map_statement.clear();
     lines.clear();
 }
@@ -87,6 +108,7 @@ int Program::getFirstLineNumber() {
 int Program::getNextLineNumber(int lineNumber) {
     // Replace this stub with your own code
     //todo
+    if(lineNumber == -1) return -1;
     auto iter = lines.find(lineNumber);
     iter++;
     if(iter == lines.end()) return -1;
@@ -102,6 +124,8 @@ void Program::switchCurrentLine(int lineNumber) {
 }
 
 void Program::nextCurrentLine() {
+    if(CurrentLine == -1) return;
+    //std::cout << CurrentLine << std::endl;
     CurrentLine = getNextLineNumber(CurrentLine);
 }
 
