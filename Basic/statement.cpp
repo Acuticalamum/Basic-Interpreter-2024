@@ -90,7 +90,49 @@ IfStatement::~IfStatement() {
 }
 void IfStatement::execute(EvalState &state, Program &program) {
   //to do
-}
+  try {
+    int lval = expr1 -> eval(state);
+    int rval = expr2 -> eval(state);
+    if(cmp == "<") {
+      if(lval < rval) {
+        try {
+          program.switchCurrentLine(gotoNumber);
+        } catch (ErrorException &ex) {
+          throw ex;
+        }
+      }
+      else {
+        program.nextCurrentLine();
+      }
+    }
+    if(cmp == ">") {
+      if(lval > rval) {
+        try {
+          program.switchCurrentLine(gotoNumber);
+        } catch (ErrorException &ex) {
+          throw ex;
+        }
+      }
+      else {
+        program.nextCurrentLine();
+      }
+    }
+    if(cmp == "=") {
+      if(lval == rval) {
+        try {
+          program.switchCurrentLine(gotoNumber);
+        } catch (ErrorException &ex) {
+          throw ex;
+        }
+      }
+      else {
+        program.nextCurrentLine();
+      }
+    }
+  } catch (ErrorException &ex) {
+    throw ex;
+  }
+ }
 
 /**/
 
