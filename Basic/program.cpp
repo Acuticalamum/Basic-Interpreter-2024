@@ -120,7 +120,10 @@ void Program::endProgram() {
 }
 
 void Program::switchCurrentLine(int lineNumber) {
-    CurrentLine = lineNumber;
+    if(map_statement.count(lineNumber)) {
+      CurrentLine = lineNumber;
+    }
+    else error("LINE NUMBER ERROR");
 }
 
 void Program::nextCurrentLine() {
