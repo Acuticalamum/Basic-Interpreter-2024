@@ -61,8 +61,9 @@ Statement* transfer(const std::string &str) {
     try {
       expr1 = parseExp(scanner);
       if(expr1 -> getType() == IDENTIFIER) {
-        token = scanner.nextToken();
+        token = expr1 -> toString();
         statement = new InputStatement(token);
+        return statement;
       } else {
         error("SYNTAX ERROR");
       }
@@ -125,8 +126,8 @@ InputStatement::InputStatement(std::string _name) {
 }
 void InputStatement::execute(EvalState &state, Program &program) {
   int Input;
+  std::cout << "  ?  ";
   std::cin >> Input;
-  std::cout << "  ?  " << std::endl;
   state.setValue(name, Input);
   program.nextCurrentLine();
 }
