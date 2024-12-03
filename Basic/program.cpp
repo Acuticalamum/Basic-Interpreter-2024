@@ -137,6 +137,7 @@ void Program::run_the_program(EvalState &state) {
             getParsedStatement(CurrentLine) -> execute(state, *this);
             if(Ended) break;
         } catch(ErrorException &ex) {
+            nextCurrentLine();
             std::cout << ex.getMessage() << std::endl;
         }
     }
