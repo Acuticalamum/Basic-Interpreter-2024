@@ -1,0 +1,47 @@
+[
+{
+  "directory": "/home/acuticalamum/projects/Basic-Interpreter-2024/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/code.dir/Basic/Basic.cpp.o -c /home/acuticalamum/projects/Basic-Interpreter-2024/Basic/Basic.cpp",
+  "file": "/home/acuticalamum/projects/Basic-Interpreter-2024/Basic/Basic.cpp"
+},
+{
+  "directory": "/home/acuticalamum/projects/Basic-Interpreter-2024/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/code.dir/Basic/evalstate.cpp.o -c /home/acuticalamum/projects/Basic-Interpreter-2024/Basic/evalstate.cpp",
+  "file": "/home/acuticalamum/projects/Basic-Interpreter-2024/Basic/evalstate.cpp"
+},
+{
+  "directory": "/home/acuticalamum/projects/Basic-Interpreter-2024/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/code.dir/Basic/exp.cpp.o -c /home/acuticalamum/projects/Basic-Interpreter-2024/Basic/exp.cpp",
+  "file": "/home/acuticalamum/projects/Basic-Interpreter-2024/Basic/exp.cpp"
+},
+{
+  "directory": "/home/acuticalamum/projects/Basic-Interpreter-2024/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/code.dir/Basic/parser.cpp.o -c /home/acuticalamum/projects/Basic-Interpreter-2024/Basic/parser.cpp",
+  "file": "/home/acuticalamum/projects/Basic-Interpreter-2024/Basic/parser.cpp"
+},
+{
+  "directory": "/home/acuticalamum/projects/Basic-Interpreter-2024/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/code.dir/Basic/program.cpp.o -c /home/acuticalamum/projects/Basic-Interpreter-2024/Basic/program.cpp",
+  "file": "/home/acuticalamum/projects/Basic-Interpreter-2024/Basic/program.cpp"
+},
+{
+  "directory": "/home/acuticalamum/projects/Basic-Interpreter-2024/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/code.dir/Basic/statement.cpp.o -c /home/acuticalamum/projects/Basic-Interpreter-2024/Basic/statement.cpp",
+  "file": "/home/acuticalamum/projects/Basic-Interpreter-2024/Basic/statement.cpp"
+},
+{
+  "directory": "/home/acuticalamum/projects/Basic-Interpreter-2024/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/code.dir/Basic/Utils/error.cpp.o -c /home/acuticalamum/projects/Basic-Interpreter-2024/Basic/Utils/error.cpp",
+  "file": "/home/acuticalamum/projects/Basic-Interpreter-2024/Basic/Utils/error.cpp"
+},
+{
+  "directory": "/home/acuticalamum/projects/Basic-Interpreter-2024/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/code.dir/Basic/Utils/tokenScanner.cpp.o -c /home/acuticalamum/projects/Basic-Interpreter-2024/Basic/Utils/tokenScanner.cpp",
+  "file": "/home/acuticalamum/projects/Basic-Interpreter-2024/Basic/Utils/tokenScanner.cpp"
+},
+{
+  "directory": "/home/acuticalamum/projects/Basic-Interpreter-2024/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/code.dir/Basic/Utils/strlib.cpp.o -c /home/acuticalamum/projects/Basic-Interpreter-2024/Basic/Utils/strlib.cpp",
+  "file": "/home/acuticalamum/projects/Basic-Interpreter-2024/Basic/Utils/strlib.cpp"
+}
+]

@@ -73,7 +73,6 @@ public:
 
 };
 
-
 /*
  * The remainder of this file must consists of subclass
  * definitions for the individual statement forms.  Each of
@@ -84,5 +83,65 @@ public:
  * an Expression object), the class implementation must also
  * specify its own destructor method to free that memory.
  */
+
+ class RemStatement : public Statement {
+   public :
+     RemStatement();
+     ~RemStatement();
+     virtual void execute(EvalState &, Program &) override;
+ };
+
+ class LetStatement : public Statement {
+   public :
+     LetStatement(TokenScanner &);
+     ~LetStatement();
+     virtual void execute(EvalState &, Program &) override;
+   private :
+     Expression* expr;
+ };
+
+ class PrintStatement : public Statement {
+   public :
+     PrintStatement(Expression* );
+     ~PrintStatement();
+     virtual void execute(EvalState &, Program &) override;
+   private :
+     Expression* expr;
+ };
+
+ class InputStatement : public Statement {
+   public :
+     InputStatement(std::string);
+     virtual void execute(EvalState &, Program &) override;
+   private :
+     std::string name;
+ };
+
+ class IfStatement : public Statement {
+   public :
+     IfStatement(Expression*, std::string, Expression*, int);
+     ~IfStatement();
+     virtual void execute(EvalState &, Program &) override;
+   private : 
+     Expression *expr1, *expr2;
+     int gotoNumber;
+     std::string cmp;
+ };
+
+ class EndStatement : public Statement {
+   public :
+     EndStatement();
+     virtual void execute(EvalState &, Program &) override;
+ };
+
+ class GotoStatement : public Statement {
+   public :
+     GotoStatement(int);
+     virtual void execute(EvalState &, Program &) override;
+   private : 
+     int lineNumber;
+ };
+
+Statement* transfer(const std::string &x); 
 
 #endif

@@ -57,6 +57,66 @@ void processLine(std::string line, Program &program, EvalState &state) {
     scanner.scanNumbers();
     scanner.setInput(line);
 
+    std::string token;
+    TokenType tokentype = STRING;
+    if(scanner.hasMoreTokens()) {
+      token = scanner.nextToken();
+      tokentype = scanner.getTokenType(token);
+    }
+    else return;
+    
+    /*dealing with number-prefixed lines*/
+    if(tokentype == NUMBER) {
+      int lineNumber = stringToInteger(token);
+      try {
+        if(scanner.hasMoreTokens()) program.addSourceLine(lineNumber, line);
+        else program.removeSourceLine(lineNumber);
+      } catch(ErrorException &ex) {
+        std::cout << ex.getMessage() << std::endl;
+      }
+    }
+
+    /*dealing with special orders*/
+    else if(token == "RUN") {
+      try {
+        program.run_the_program(state);
+      } catch (ErrorException &ex) {
+        std::cout << ex.getMessage() << std::endl;
+      }
+      return;
+    }
+    else if(token == "LIST") {
+      int key = program.getFirstLineNumber();
+      while(key != -1) {
+        std::cout << program.getSourceLine(key) << std::endl;
+        key = program.getNextLineNumber(key);
+      }
+      return;
+    }
+    else if(token == "CLEAR") {
+      program.clear();
+      state.Clear();
+      return;
+    }
+    else if(token == "QUIT") {
+      exit(0);
+    }
+    else if(token == "HELP") {
+      std::cout << "Damn the BASIC Interpreter!!!" << std::endl;
+      return;
+    }
+
+    /*dealing with other lines*/
+    else if(tokentype == WORD) {
+      if(token == "LET" || token == "PRINT" || token == "INPUT") {
+        Statement* statement = transfer(line);
+        statement -> execute(state, program);
+      }
+      else {
+        std::cout << "SYNTAX ERROR" << std::endl;
+      }
+      //SYNTAX ERROR
+    }
+    else std::cout << "SYNTAX ERROR" << std::endl;
     //todo
 }
-

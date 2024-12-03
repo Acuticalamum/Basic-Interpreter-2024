@@ -19,26 +19,50 @@ Program::~Program() = default;
 void Program::clear() {
     // Replace this stub with your own code
     //todo
+    map_string.clear();
+    map_statement.clear();
+    lines.clear();
 }
 
 void Program::addSourceLine(int lineNumber, const std::string &line) {
     // Replace this stub with your own code
     //todo
+    map_string[lineNumber] = line;
+    lines.insert(lineNumber);
+    Statement* statement = transfer(line);
+    setParsedStatement(lineNumber, statement);
 }
 
 void Program::removeSourceLine(int lineNumber) {
     // Replace this stub with your own code
     //todo
+    if(map_string.count(lineNumber)) {
+       //auto iter = map_string.find(lineNumber);
+       map_string.erase(lineNumber);
+       lines.erase(lineNumber);
+       if (map_statement.count(lineNumber)) {
+         delete map_statement[lineNumber];
+         map_statement.erase(lineNumber);
+       }
+    }
 }
 
 std::string Program::getSourceLine(int lineNumber) {
     // Replace this stub with your own code
     //todo
+    if(map_string.count(lineNumber)) {
+       return map_string[lineNumber];
+    }
+    return "";
 }
 
 void Program::setParsedStatement(int lineNumber, Statement *stmt) {
     // Replace this stub with your own code
     //todo
+    if(map_string.count(lineNumber)) {
+      delete map_statement[lineNumber];
+    }
+    map_statement[lineNumber] = stmt;
 }
 
 //void Program::removeSourceLine(int lineNumber) {
@@ -46,18 +70,53 @@ void Program::setParsedStatement(int lineNumber, Statement *stmt) {
 Statement *Program::getParsedStatement(int lineNumber) {
    // Replace this stub with your own code
    //todo
+   if(map_statement.count(lineNumber)) {
+     return map_statement[lineNumber];
+   }
+   return nullptr;
 }
 
 int Program::getFirstLineNumber() {
     // Replace this stub with your own code
     //todo
+    if(lines.empty()) return -1;
+    auto iter = lines.begin();
+    return *iter;
 }
 
 int Program::getNextLineNumber(int lineNumber) {
     // Replace this stub with your own code
     //todo
+    auto iter = lines.find(lineNumber);
+    iter++;
+    if(iter == lines.end()) return -1;
+    return *iter;
 }
 
+void Program::endProgram() {
+    Ended = true; 
+}
+
+void Program::switchCurrentLine(int lineNumber) {
+    CurrentLine = lineNumber;
+}
+
+void Program::nextCurrentLine() {
+    CurrentLine = getNextLineNumber(CurrentLine);
+}
+
+void Program::run_the_program(EvalState &state) {
+    CurrentLine = getFirstLineNumber();
+    while(CurrentLine != -1) {
+        try {
+            if(Ended) break;
+            getParsedStatement(CurrentLine) -> execute(state, *this);
+            if(Ended) break;
+        } catch(ErrorException &ex) {
+            std::cout << ex.getMessage() << std::endl;
+        }
+    }
+}
 //more func to add
 //todo
 

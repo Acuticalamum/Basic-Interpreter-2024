@@ -1,0 +1,3 @@
+/home/acuticalamum/projects/Basic-Interpreter-2024/build/CMakeFiles/code.dir
+/home/acuticalamum/projects/Basic-Interpreter-2024/build/CMakeFiles/edit_cache.dir
+/home/acuticalamum/projects/Basic-Interpreter-2024/build/CMakeFiles/rebuild_cache.dir

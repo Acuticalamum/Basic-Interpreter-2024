@@ -143,10 +143,24 @@ public:
     //more func to add
     //todo
 
+    void endProgram();
+
+    void switchCurrentLine(int lineNumber);
+
+    void nextCurrentLine();
+
+    void run_the_program(EvalState &state);
+
 private:
 
     // Fill this in with whatever types and instance variables you need
     //todo
+
+    std::unordered_map <int, std::string> map_string;
+    std::unordered_map <int, Statement*> map_statement;
+    std::set<int> lines;
+    int CurrentLine;
+    bool Ended;
 };
 
 #endif
